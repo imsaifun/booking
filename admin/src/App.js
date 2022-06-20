@@ -9,62 +9,74 @@ import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
-import { hotelColumns, userColumns } from "./datatablesource";
+import { hotelColumns, roomColumns, userColumns } from "./datatablesource";
+import NewHotel from "./pages/newHotel/NewHotel";
+import NewRoom from "./pages/newRoom/NewRoom";
 
 function App() {
-  const { darkMode } = useContext(DarkModeContext);
+    const { darkMode } = useContext(DarkModeContext);
 
-  const ProtectedRoute = ({ children }) => {
-    const { user } = useContext(AuthContext)
+    const ProtectedRoute = ({ children }) => {
+        const { user } = useContext(AuthContext)
 
-    if (!user) {
-      return <Navigate to="/login" />
+        if (!user) {
+            return <Navigate to="/login" />
+        }
+        return children
+
     }
-    return children
 
-  }
-
-  return (
-    <div className={darkMode ? "app dark" : "app"}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="login" element={<Login />} />
-          <Route path="/">
-            <Route index element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-            />
-            <Route path="users">
-              <Route index element={
-                <ProtectedRoute>
-                  <List cloumns={userColumns} />
-                </ProtectedRoute>
-              } />
-              <Route path=":userId" element={
-                <ProtectedRoute>
-                  <Single />
-                </ProtectedRoute>
-              } />
-              <Route
-                path="new"
-                element={<ProtectedRoute><New inputs={userInputs} title="Add New User" /></ProtectedRoute>}
-              />
-            </Route>
-            <Route path="hotels">
-              <Route index element={<List cloumns={hotelColumns} />} />
-              <Route path=":productId" element={<Single />} />
-              <Route
-                path="new"
-                element={<ProtectedRoute><New inputs={productInputs} title="Add New Product" /></ProtectedRoute>}
-              />
-            </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+    return (
+        <div className={darkMode ? "app dark" : "app"}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="login" element={<Login />} />
+                    <Route path="/">
+                        <Route index element={
+                            <ProtectedRoute>
+                                <Home />
+                            </ProtectedRoute>
+                        }
+                        />
+                        <Route path="users">
+                            <Route index element={
+                                <ProtectedRoute>
+                                    <List cloumns={userColumns} />
+                                </ProtectedRoute>
+                            } />
+                            <Route path=":userId" element={
+                                <ProtectedRoute>
+                                    <Single />
+                                </ProtectedRoute>
+                            } />
+                            <Route
+                                path="new"
+                                element={<ProtectedRoute><New inputs={userInputs} title="Add New User" /></ProtectedRoute>}
+                            />
+                        </Route>
+                        <Route path="hotels">
+                            <Route index element={<ProtectedRoute><List cloumns={hotelColumns} /></ProtectedRoute>} />
+                            <Route path=":productId" element={<ProtectedRoute><Single /></ProtectedRoute>} />
+                            <Route
+                                path="new"
+                                element={<ProtectedRoute><NewHotel /></ProtectedRoute>}
+                            />
+                        </Route>
+                        <Route path="rooms">
+                            <Route
+                                index
+                                element={<ProtectedRoute><List cloumns={roomColumns} /></ProtectedRoute>} />
+                            <Route path=":productId" element={<ProtectedRoute><Single /></ProtectedRoute>} />
+                            <Route
+                                path="new"
+                                element={<ProtectedRoute><NewRoom /></ProtectedRoute>}
+                            />
+                        </Route>
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;

@@ -49,8 +49,8 @@ const Datatable = ({cloumns}) => {
     return (
         <div className="datatable">
             <div className="datatableTitle">
-                Add New User
-                <Link to="/users/new" className="link">
+                Add New {path}
+                <Link to={`/${path}/new`}  className="link">
                     Add New
                 </Link>
             </div>
